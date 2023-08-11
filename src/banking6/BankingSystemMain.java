@@ -1,4 +1,4 @@
-package banking5;
+package banking6;
 
 import java.io.Serializable;
 import java.util.InputMismatchException;
@@ -42,6 +42,8 @@ public class BankingSystemMain implements Serializable {
 				case MenuChoice.DELETE:
 					accManager.deleteAccount();
 					break;
+				case MenuChoice.OPTION:
+					accManager.saveOption();
 				case MenuChoice.EXIT:
 					accManager.saveAccounts();
 					return;
