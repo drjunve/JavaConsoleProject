@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 
+
 class DepositMinusException extends Exception {
 	public DepositMinusException() {
 		super("입금액이 음수로 입력되었습니다. 프로그램을 재시작 해주세요.");
@@ -48,8 +49,9 @@ public class AccountManager implements Serializable {
 		System.out.print("2.입 금  ");
 		System.out.println("3.출 금");
 		System.out.print("4.계좌정보출력  ");
-		System.out.println("5.계좌정보삭제  ");
-		System.out.println("6.프로그램종료");
+		System.out.print("5.계좌정보삭제  ");
+		System.out.println("6.저장옵션");
+		System.out.println("7.프로그램종료");
 		System.out.println("선택: ");
 		
 	}
@@ -285,12 +287,41 @@ public class AccountManager implements Serializable {
 	    }
 	}
 	
+	transient private AutoSaver autoSaver;
+	
 	void saveOption() {
+		System.out.println("1.자동저장On    2.자동저장Off");
+		int selectOption = scanner.nextInt();
 		
+		switch (selectOption) {
+		case 1:
+			if (autoSaver != null && autoSaver.isAlive()) {
+				System.out.println("이미 자동 저장이 실행중입니다.");
+			}
+			else {
+				autoSaver = new AutoSaver(this);
+				autoSaver.start();
+				System.out.println("자동 저장이 시작되었습니다.");
+			}
+			break;
+		case 2:
+			if (autoSaver != null && autoSaver.isAlive()) {
+				autoSaver.interrupt();
+				System.out.println("자동 저장이 중지되었습니다.");
+			}
+			else {
+				System.out.println("자동 저장이 실행 중이지 않습니다.");
+			}
+			break;
+		default:
+			System.out.println("잘못된 선택입니다. 다시 입력해주세요.");
+			break;
+		}
+
 	}
 	
 	public void saveAccounts() {
-	    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("src/banking5/AccountInfo.obj"))) {
+	    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("src/banking6/AccountInfo.obj"))) {
 	        out.writeObject(accHash); // accounts는 HashSet<Account> 형태의 변수라고 가정
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -298,7 +329,7 @@ public class AccountManager implements Serializable {
 	}
 	
 	public void loadAccounts() {
-	    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("src/banking5/AccountInfo.obj"))) {
+	    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("src/banking6/AccountInfo.obj"))) {
 	        accHash = (HashSet<Object>) in.readObject();
 	    } catch (IOException | ClassNotFoundException e) {
 	        // 파일이 없거나 처음 시작하는 경우에는 무시

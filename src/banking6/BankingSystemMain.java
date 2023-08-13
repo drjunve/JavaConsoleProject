@@ -44,6 +44,7 @@ public class BankingSystemMain implements Serializable {
 					break;
 				case MenuChoice.OPTION:
 					accManager.saveOption();
+					break;
 				case MenuChoice.EXIT:
 					accManager.saveAccounts();
 					return;
@@ -72,7 +73,7 @@ public class BankingSystemMain implements Serializable {
 		catch (InputMismatchException e) {
 			System.out.println("숫자를 입력해 주세요.");
 		}
-		if (choice<1 || choice>6) {
+		if (choice<1 || choice>7) {
 			ChoiceNumberErrorException ex = new ChoiceNumberErrorException();
 			throw ex;
 		}

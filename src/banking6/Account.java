@@ -18,6 +18,11 @@ abstract class Account implements Serializable{
 	private String customName;//이름
 	private int balance;//잔액
 	
+	@Override
+	public String toString() {
+		
+	}
+	
 	public Account() {};
 	
 	public Account(String accountID, String customName, int balance) {
