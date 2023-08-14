@@ -1,8 +1,9 @@
 package banking6;
 
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 
 public class AutoSaver extends Thread {
 
@@ -36,16 +37,15 @@ public class AutoSaver extends Thread {
 	}
 	
 	private void saveAccountToFile() {
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("src/banking6/AutoSaveAccount.txt"))) {
-			for(Account account : accountManager.getAllAccounts()) {
-				out.println(account.toString());
-			}
-			out.writeObject(accountManager);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("파일 저장 중 오류 발생: "+ e.getMessage());
-		}
+	    try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("src/banking6/AutoSaveAccount.txt")))) {
+	        for(Account account : accountManager.getAllAccounts()) {
+	            out.println(account.toString());
+	        }
+	    }
+	    catch (IOException e) {
+	        e.printStackTrace();
+	        System.out.println("파일 저장 중 오류 발생: "+ e.getMessage());
+	    }
 	}
 	
 }

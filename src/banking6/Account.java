@@ -20,7 +20,25 @@ abstract class Account implements Serializable{
 	
 	@Override
 	public String toString() {
-		
+	    StringBuilder sb = new StringBuilder();
+
+	    sb.append("계좌번호 : ").append(getAccountID()).append('\n');
+	    sb.append("고객이름 : ").append(getCustomName()).append('\n');
+	    sb.append("잔고 : ").append(getBalance()).append('\n');
+
+	    // 현재 객체가 NormalAccount의 인스턴스인지 확인
+	    if (this instanceof NormalAccount) {
+	        NormalAccount na = (NormalAccount) this;
+	        sb.append("기본이자 : ").append((int)(na.basicInterest*100)).append("%").append('\n');
+	    }
+	    // 현재 객체가 HighCreditAccount의 인스턴스인지 확인
+	    else if (this instanceof HighCreditAccount) {
+	        HighCreditAccount hca = (HighCreditAccount) this;
+	        sb.append("기본이자 : ").append((int)(hca.basicInterest*100)).append("%").append('\n');
+	        sb.append("신용등급 : ").append(hca.creditRank).append('\n');
+	    }
+
+	    return sb.toString();
 	}
 	
 	public Account() {};

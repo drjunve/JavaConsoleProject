@@ -57,8 +57,11 @@ public class AccountManager implements Serializable {
 	}
 	
 	//계좌개설
-	HashSet<Object> accHash = new HashSet<Object>();
+	HashSet<Account> accHash = new HashSet<Account>();
 	
+	public HashSet<Account> getAllAccounts() {
+		return accHash;
+	}
 	
 	void makeAccount() {
 		
@@ -142,17 +145,14 @@ public class AccountManager implements Serializable {
 	}
 	
 	public void showAccInfo() {
-		Iterator itr = accHash.iterator();
 		
+		Iterator<Account> itr = accHash.iterator();
+			
 		while(itr.hasNext()) {
-			Object object = itr.next();
-			if(object instanceof Account) {
-				((Account)object).showAccInfo();
-			}
-			else {
-				System.out.println("저장된객체:"+object);
-			}
+			Account account = itr.next();
+			account.showAccInfo();
 		}
+		
 	}
 	
 	//입금
@@ -330,10 +330,12 @@ public class AccountManager implements Serializable {
 	
 	public void loadAccounts() {
 	    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("src/banking6/AccountInfo.obj"))) {
-	        accHash = (HashSet<Object>) in.readObject();
+	        accHash = (HashSet<Account>) in.readObject();
 	    } catch (IOException | ClassNotFoundException e) {
 	        // 파일이 없거나 처음 시작하는 경우에는 무시
 	    }
+	    
+	    scanner = new Scanner(System.in);
 	}
 	
 }
